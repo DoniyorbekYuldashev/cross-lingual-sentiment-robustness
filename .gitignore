@@ -1,0 +1,25 @@
+# Data & features
+data/
+
+# Models
+models/
+*.pkl
+
+# Results
+results/
+*.csv
+*.png
+
+# Python
+__pycache__/
+*.pyc
+
+# Jupyter / tools
+.ipynb_checkpoints/
+
+# Environments
+venv/
+.env/
+
+# IDE
+.idea/

@@ -1,0 +1,173 @@
+{
+  "project": {
+    "name": "Cross-Lingual Sentiment Robustness",
+    "author": "DoniyorbekYuldashev",
+    "date": "2025-11-01",
+    "version": "1.0"
+  },
+  "dataset": {
+    "name": "amazon_reviews_multi",
+    "source": "Kaggle - mexwell/amazon-reviews-multi",
+    "train_lang": "english",
+    "test_lang": "spanish",
+    "sample_size": 25000,
+    "task": "binary_sentiment"
+  },
+  "cross_validation": {
+    "n_folds": 5,
+    "strategy": "stratified",
+    "shuffle": true,
+    "random_state": 42
+  },
+  "text_preprocessing": {
+    "lowercase": true,
+    "remove_urls": true,
+    "remove_special_chars": true,
+    "preserve_spanish_accents": true,
+    "min_review_length": 10
+  },
+  "vectorization": {
+    "tfidf": {
+      "max_features": 10000,
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 2,
+      "max_df": 0.95,
+      "sublinear_tf": true
+    },
+    "bow": {
+      "max_features": 10000,
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 2,
+      "max_df": 0.95
+    }
+  },
+  "models": {
+    "logistic_regression": {
+      "C": 1.0,
+      "penalty": "l2",
+      "solver": "lbfgs",
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "ridge": {
+      "alpha": 1.0,
+      "solver": "auto",
+      "random_state": 42
+    },
+    "svm": {
+      "C": 1.0,
+      "penalty": "l2",
+      "loss": "squared_hinge",
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "sgd": {
+      "loss": "log_loss",
+      "penalty": "l2",
+      "alpha": 0.0001,
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "naive_bayes": {
+      "alpha": 1.0
+    },
+    "perceptron": {
+      "alpha": [
+        0.0001,
+        0.001,
+        0.01,
+        0.1
+      ],
+      "penalty": [
+        "l2",
+        "l1",
+        "elasticnet"
+      ],
+      "max_iter": [
+        1000,
+        2000
+      ],
+      "random_state": 42
+    },
+    "mlp": {
+      "hidden_layer_sizes": [
+        [
+          100
+        ],
+        [
+          100,
+          50
+        ],
+        [
+          200
+        ],
+        [
+          200,
+          100
+        ]
+      ],
+      "activation": [
+        "relu",
+        "tanh"
+      ],
+      "alpha": [
+        0.0001,
+        0.001,
+        0.01
+      ],
+      "learning_rate": [
+        "constant",
+        "adaptive"
+      ],
+      "max_iter": [
+        500
+      ],
+      "early_stopping": true,
+      "validation_fraction": 0.1,
+      "random_state": 42
+    }
+  },
+  "calibration": {
+    "methods": [
+      "platt",
+      "isotonic"
+    ],
+    "platt": {
+      "method": "sigmoid",
+      "cv": "prefit"
+    },
+    "isotonic": {
+      "method": "isotonic",
+      "cv": "prefit"
+    },
+    "n_bins": 10
+  },
+  "evaluation": {
+    "metrics": [
+      "accuracy",
+      "precision",
+      "recall",
+      "f1",
+      "roc_auc",
+      "brier",
+      "ece"
+    ],
+    "average": "binary",
+    "save_predictions": true,
+    "save_probabilities": true,
+    "save_oof": true
+  },
+  "ensemble": {
+    "voting_types": [
+      "hard",
+      "soft"
+    ],
+    "weights": null
+  }
+}
